@@ -99,7 +99,7 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       await commentRepositoryPostgres.addComment(addComment);
-      await expect(commentRepositoryPostgres.verifyUserComment('userId', 'commentId')).rejects.toThrow(NotFoundError);
+      await expect(commentRepositoryPostgres.verifyUserComment('userId', 'comment-id-test')).rejects.toThrow(NotFoundError);
     });
 
     it('should throw AuthorizationError when comment delete by non owner', async () => {
