@@ -2,7 +2,10 @@ const Jwt = require('@hapi/jwt');
 const UsersTableTestHelper = require('./UsersTableTestHelper');
 
 const ServerTestHelper = {
-  async getAccessToken(userId = 'user-123', username = 'dicoding') {
+  async getAccessToken(
+    userId = 'user-123',
+    username = 'dicoding',
+  ) {
     const payloadUser = {
       id: userId,
       username,
