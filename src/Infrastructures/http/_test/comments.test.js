@@ -1,11 +1,10 @@
 const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
-
+const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
-const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 
 describe('/threads/{threadId}/comments endpoint', () => {
   let accessToken;
@@ -24,9 +23,9 @@ describe('/threads/{threadId}/comments endpoint', () => {
     await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
   });
 
-  describe('when POST /thread/{threadId}/comments', () => {
-    it('should response 201 and persisted comment ', async () => {
-      const payload = { content: 'comment content' };
+  describe('when POST /threads/{threadId}/comments', () => {
+    it('should response 201 and persisted comment', async () => {
+      const payload = { content: 'comment content test' };
       const server = await createServer(container);
 
       const response = await server.inject({
@@ -39,7 +38,6 @@ describe('/threads/{threadId}/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.data.addedComment).toBeDefined();
@@ -59,15 +57,16 @@ describe('/threads/{threadId}/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.data.addedComment).toBeDefined();
+      expect(responseJson.message).toEqual(
+        'thread tidak ditemukan',
+      );
     });
   });
 
   describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
-    it('should response 200 and delete comment', async () => {
+    it('should response 200 and deleted comment', async () => {
       const server = await createServer(container);
 
       await CommentsTableTestHelper.addComment({
@@ -84,14 +83,17 @@ describe('/threads/{threadId}/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
-
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
     });
 
     it('should response 403 when comment it is not the owner', async () => {
       const server = await createServer(container);
-      const otherAccessToken = await ServerTestHelper.getAccessToken('user-123', 'desi');
+
+      const otherAccessToken = await ServerTestHelper.getAccessToken(
+        'user-321',
+        'Desi',
+      );
 
       await CommentsTableTestHelper.addComment({
         userId: 'user-123',
@@ -102,15 +104,14 @@ describe('/threads/{threadId}/comments endpoint', () => {
         method: 'DELETE',
         url: '/threads/threadId/comments/commentId',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${otherAccessToken}`,
         },
       });
 
       const responseJson = JSON.parse(response.payload);
-
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Halaman tidak ditemukan');
+      expect(responseJson.message).toEqual('Resource ini tidak boleh diakses');
     });
 
     it('should response 404 when thread is not found', async () => {
@@ -118,13 +119,13 @@ describe('/threads/{threadId}/comments endpoint', () => {
 
       const response = await server.inject({
         method: 'DELETE',
-        url: '/threads/thread-6546/comments/commetsId',
+        url: '/threads/thread-12345/comments/commentId',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const responseJson = JSON.parse(response.payload);
 
+      const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual(
@@ -137,18 +138,17 @@ describe('/threads/{threadId}/comments endpoint', () => {
 
       const response = await server.inject({
         method: 'DELETE',
-        url: '/threads/thread-id_test/comments/comment-id_test',
+        url: '/threads/threadId/comments/commentId',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
       const responseJson = JSON.parse(response.payload);
-
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual(
-        'comment tidak ditemukan',
+        'Comment not found',
       );
     });
   });
