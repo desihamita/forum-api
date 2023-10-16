@@ -83,6 +83,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
       });
 
       const responseJson = JSON.parse(response.payload);
+
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
     });
@@ -111,7 +112,7 @@ describe('/threads/{threadId}/comments endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(403);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('Resource ini tidak boleh diakses');
+      expect(responseJson.message).toEqual('Halaman tidak bisa diakses');
     });
 
     it('should response 404 when thread is not found', async () => {

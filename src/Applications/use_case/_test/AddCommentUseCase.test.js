@@ -9,7 +9,7 @@ describe('AddCommentUseCase', () => {
     const userId = 'userId';
     const threadId = 'threadId';
     const useCasePayload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     const expectedAddedComment = new AddedComment({

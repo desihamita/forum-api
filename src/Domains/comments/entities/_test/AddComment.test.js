@@ -5,7 +5,7 @@ describe('AddComment entities', () => {
     const userId = '';
     const threadId = 'threadId';
     const payload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     expect(() => new AddComment(userId, threadId, payload)).toThrowError('ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -15,7 +15,7 @@ describe('AddComment entities', () => {
     const userId = 1234;
     const threadId = 'threadId';
     const payload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     expect(() => new AddComment(userId, threadId, payload)).toThrowError('ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -25,7 +25,7 @@ describe('AddComment entities', () => {
     const userId = 'userId';
     const threadId = '';
     const payload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     expect(() => new AddComment(userId, threadId, payload)).toThrowError('ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
@@ -35,7 +35,7 @@ describe('AddComment entities', () => {
     const userId = 'userId';
     const threadId = 1234;
     const payload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     expect(() => new AddComment(userId, threadId, payload)).toThrowError('ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
@@ -63,7 +63,7 @@ describe('AddComment entities', () => {
     const expectedUserId = 'userId';
     const expectedThreadId = 'threadId';
     const payload = {
-      content: 'comment content',
+      content: 'comment content test',
     };
 
     const { userId, threadId, content } = new AddComment(expectedUserId, expectedThreadId, payload);

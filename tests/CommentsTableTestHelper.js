@@ -11,7 +11,6 @@ const CommentsTableTestHelper = {
       text: 'INSERT INTO comments(owner, thread, id, content) VALUES($1, $2, $3, $4) RETURNING id, content, owner',
       values: [userId, threadId, commentId, content],
     };
-
     await pool.query(query);
   },
 
@@ -20,11 +19,9 @@ const CommentsTableTestHelper = {
       text: 'SELECT * FROM comments WHERE id = $1',
       values: [id],
     };
-
     const result = await pool.query(query);
     return result.rows;
   },
-
   async cleanTable() {
     await pool.query('DELETE FROM comments WHERE 1=1');
   },

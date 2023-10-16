@@ -4,7 +4,7 @@ describe('DetailComment entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     const payload = {
       id: 'commentId',
-      content: 'comment content',
+      content: 'comment content test',
       date: '2023-02-12 04:04:04.012345',
     };
 
@@ -14,7 +14,7 @@ describe('DetailComment entities', () => {
   it('should throw error when payload did not meet data type specification', () => {
     const payload = {
       id: 'commentId',
-      content: 'comment content',
+      content: 'comment content test',
       date: '2023-02-12 04:04:04.012345',
       username: 'dicoding',
       isDelete: 'no',
@@ -26,7 +26,7 @@ describe('DetailComment entities', () => {
   it('should create commentDetails object correctly', () => {
     const payload = {
       id: 'commentId',
-      content: 'comment content',
+      content: 'comment content test',
       date: '2023-02-12 04:04:04.012345',
       username: 'dicoding',
       isDelete: false,
