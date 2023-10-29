@@ -43,7 +43,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (result.rowCount === 0) {
       throw new NotFoundError('Comment not found');
     } else if (result.rows[0].owner !== userId) {
-      throw new AuthorizationError('Cannot access this page');
+      throw new AuthorizationError('Halaman tidak bisa diakses');
     }
   }
 }
